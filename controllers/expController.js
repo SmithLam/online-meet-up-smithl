@@ -2,7 +2,7 @@ const Experiences = require("../models/experiencies");
 const Tag = require("../models/tag");
 
 exports.getExperiences = async (req, res, next) => {
-  const exp = Experiences.find({}).populate();
+  const exp = await Experiences.find({}).populate("tags").populate("host");
   return res.status(200).json({
     status: "OK",
     data: exp,
