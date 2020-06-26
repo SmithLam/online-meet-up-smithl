@@ -28,6 +28,12 @@ const schema = new mongoose.Schema(
       required: [true, "password is required"],
     },
     token: [String],
+    type: {
+      type: String,
+      enum: ["normal", "host"],
+      required: [true, "Type of user is required"],
+      default:"normal"
+    }
   },
   {
     timestamps: true,

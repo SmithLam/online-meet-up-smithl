@@ -20,9 +20,6 @@ router
 router
   .route("/me")
   .get(loginRequired, getMyProfile)
-  .patch(loginRequired, updateMyProfile)
-
-
-
+  .patch(loginRequired, updateMyProfile);
 
 module.exports = router;

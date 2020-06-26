@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name, password, type } = req.body;
     if (!email || !name || !password) {
       return res.status(400).json({
         status: "failed",
@@ -13,6 +13,7 @@ exports.createUser = async (req, res, next) => {
       email: email,
       name: name,
       password: password,
+      type: type || "normal"
     });
 
     res.status(201).json({
@@ -52,9 +53,10 @@ exports.updateMyProfile = async (req, res, next) => {
 exports.logoutMyProfile = async (req, res, next) => {
   try {
     const user = req.user;
-    delete user.token;
-    user.save();
-    return res.status(204).json({ status: "Logout" });
+    const token = req.token;
+    user.token = user.token.filter((item) => item !== token);
+    await user.save()
+    res.status(204).json({ status: "Logged out", data: null });
   } catch (err) {
     return res.send(err.message);
   }

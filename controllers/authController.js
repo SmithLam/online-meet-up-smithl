@@ -13,7 +13,7 @@ exports.loginWithEmail = async (req, res, next) => {
     }
     const token = await user.generateToken()
   res.status(200).json({
-    status: "Logged",
+    status: "Logged In",
     data: {user: user, token: token}
   });
 };
