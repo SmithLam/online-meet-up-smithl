@@ -1,6 +1,6 @@
-const { route } = require("./users");
 const {
   getExperiences,
+  getSingleExperience,
   createExperience,
 } = require("../controllers/expController");
 
@@ -12,5 +12,7 @@ router
   .route("/")
   .get(getExperiences)
   .post(loginRequired, hostRequired, createExperience);
+
+router.route("/:expID").get(getSingleExperience);
 
 module.exports = router;

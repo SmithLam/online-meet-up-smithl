@@ -1,12 +1,33 @@
-const Experiences = require("../models/experiencies");
+const Experiences = require("../models/experiences");
 const Tag = require("../models/tag");
 
 exports.getExperiences = async (req, res, next) => {
-  const exp = await Experiences.find({}).populate("tags").populate("host");
-  return res.status(200).json({
-    status: "OK",
-    data: exp,
-  });
+  try {
+    const exp = await Experiences.find({}).populate("tags").populate("host");
+    return res.status(200).json({
+      status: "OK",
+      data: exp,
+    });
+  } catch (err) {
+    return res.send(err.message);
+  }
+};
+
+exports.getSingleExperience = async (req, res, next) => {
+  try {
+    const id = req.params.expID;
+    if (!id) return res.send("Please input an ID!");
+    const exp = await Experiences.findById(id)
+      .populate("tags")
+      .populate("host");
+    if (!exp) return res.send("No valid experience found!");
+    return res.status(200).json({
+      status: "OK",
+      data: exp,
+    });
+  } catch (err) {
+    return res.send(err.message);
+  }
 };
 
 exports.createExperience = async (req, res, next) => {

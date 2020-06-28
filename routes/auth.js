@@ -11,13 +11,12 @@ const {
 } = require("../controllers/userController");
 const { loginRequired } = require("../middleware/auth.js");
 
-
 router
   .route("/login")
   .get(function (req, res, next) {
     res.send("respond with a resource");
   })
-    .post(loginWithEmail);
+  .post(loginWithEmail);
 
 router.route("/logout").get(loginRequired, logoutMyProfile);
 

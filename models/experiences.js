@@ -29,6 +29,13 @@ const Schema = new mongoose.Schema(
         required: true,
       },
     ],
+    reviews: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "review",
+        unique:true
+      },
+    ],
   },
   {
     timestamps: true,
@@ -40,20 +47,5 @@ const Schema = new mongoose.Schema(
 
 
 
-// schema.pre("save", async function (next) {
-//   let arr = [...this.tags]; //array of strings
-//   //change it into an arr of Object
-//   //find the document tag from string
-//   let foo = arr.map(
-//     async (item) =>
-//       await Tag.findOne({
-//         tag: item.toLowerCase().trim(),
-//       })
-//   );
-//     let result = Promise.all(foo);
-
-//   this.tag = result;
-//   next();
-// });
 
 module.exports = mongoose.model("Experiences", Schema);
