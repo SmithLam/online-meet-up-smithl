@@ -50,7 +50,7 @@ exports.createExperience = async (req, res, next) => {
       tags: newArr,
       host: req.user.id,
     });
-
+    exp.save();
     return res.status(201).json({ status: "ok", data: exp });
   } catch (err) {
     return res.send(err.message);

@@ -23,13 +23,14 @@ exports.createReview = async (req, res, next) => {
 
     // create review
     const review = await Review.findOneAndUpdate(
-      { user: req.user._id, experience: req.exp._id },
+      { author: req.user._id, exp: req.exp._id },
       { description, rating },
       { upsert: true, new: true, runValidators: true }
       // upsert: allow add new document
       // new: true => return new doc instead of old doc as default
       // runValidators: true => use mongoose validator
     );
+    review.save();
     res.status(201).json({ status: "success", data: review });
   } catch (error) {
     res.status(400).json({ status: "fail", message: error.message });

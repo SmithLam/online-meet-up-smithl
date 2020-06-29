@@ -33,7 +33,7 @@ const Schema = new mongoose.Schema(
       {
         type: mongoose.Schema.ObjectId,
         ref: "review",
-        unique:true
+        unique: true,
       },
     ],
   },
@@ -43,9 +43,5 @@ const Schema = new mongoose.Schema(
     toObjectL: { virtuals: true },
   }
 );
-
-
-
-
 
 module.exports = mongoose.model("Experiences", Schema);

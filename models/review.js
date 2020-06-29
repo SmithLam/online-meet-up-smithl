@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Exp = require("./experiences")
+const Experiences = require("./experiences");
 
 const schema = new mongoose.Schema(
   {
@@ -20,7 +20,7 @@ const schema = new mongoose.Schema(
       mixlength: 5,
       maxlength: 500,
     },
-    experiencies: {
+    exp: {
       type: mongoose.Schema.ObjectId,
       ref: "Experiences",
       required: true,
@@ -33,14 +33,27 @@ const schema = new mongoose.Schema(
   }
 );
 
-
-schema.pre("save", async function (next) {
-  const id = this._id
-  const duplicateReview = Exp.findIndex(item => item.reviews === id)
-  if (duplicateReview != -1) { next() }
-  Exp.reviews.push(id)
-  next()
-})
+schema.pre("save", async function (req, res, next) {
+  const reviewID = this._id;
+  const expID = this.exp;
+  const exp = await Experiences.findOne({ _id: expID });
+  const expReviews = exp.reviews;
+  console.log("This is the review id", reviewID);
+  console.log("This is the exp id", expID);
+  console.log("this is the exp targeted", expReviews);
+  const match = await Experiences.findOne({ reviews: reviewID });
+  console.log("does it match or not", match);
+  if (match) {
+    return next();
+  } else {
+    await expReviews.push(reviewID);
+    const addReview = await Experiences.findOneAndUpdate(
+      { _id: expID },
+      { reviews: expReviews },
+      { upsert: true, new: true, runValidators: true }
+    );
+    next();
+  }
+});
 
 module.exports = mongoose.model("Review", schema);
-
