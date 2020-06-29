@@ -29,13 +29,13 @@ const Schema = new mongoose.Schema(
         required: true,
       },
     ],
-    reviews: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "review",
-        unique: true,
-      },
-    ],
+    // reviews: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "review",
+    //     unique: true,
+    //   },
+    // ],
   },
   {
     timestamps: true,

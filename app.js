@@ -9,6 +9,7 @@ var authRouter = require("./routes/auth");
 var expRouter = require("./routes/experiences");
 var reviewRouter = require("./routes/review");
 const mongoose = require("mongoose");
+const { stack } = require("./routes/users");
 require("dotenv").config();
 
 mongoose
@@ -39,20 +40,22 @@ app.use("/auth", authRouter);
 app.use("/experiences", expRouter);
 app.use("/experiences/:expID", reviewRouter);
 
+app.route("*").all(function (req, res, next) {
+  next(new Error("not found"));
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  next(new AppError(404, "Route not found")); //go straight to the middleware
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  if (process.env.NODE_ENV !== "development") {
+    res.status(err.statusCode).json({ status: err.status, message: err.message });
+  } else {
+    res.status(err.statusCode).json({ status: err.status, message: err.message, stack: err.stack });
+  }
 });
 
 module.exports = app;

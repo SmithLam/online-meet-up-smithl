@@ -1,5 +1,6 @@
 const Experiences = require("../models/experiences");
 const Tag = require("../models/tag");
+const { deleteOne, updateOne } = require("./handleFactory");
 
 exports.getExperiences = async (req, res, next) => {
   try {
@@ -56,3 +57,6 @@ exports.createExperience = async (req, res, next) => {
     return res.send(err.message);
   }
 };
+
+exports.deleteExperience = deleteOne(Experiences);
+exports.updateExperience = updateOne(Experiences);
