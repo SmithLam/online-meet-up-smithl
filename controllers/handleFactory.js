@@ -25,14 +25,14 @@ exports.updateOne = (Model) => async (req, res, next) => {
   try {
     let filteredObj = {};
     let allows = []; //the fields that we allow the user to change, depending on the Model
-    if (Model.name === "Experiences") {
+    if (Model.modelName === "Experiences") {
       (filteredObj._id = req.params.expID),
         (filteredObj.host = req.user._id),
         (allows = ["title", "description", "tags"]);
       if (req.body.tags) {
         req.body.tags = await Tag.convertToObject(req.body.tags);
       }
-    } else if (Model.name === "Review") {
+    } else if (Model.modelName === "Review") {
       (filteredObj._id = req.params.revID),
         (filteredObj.author = req.user._id),
         (allows = ["rating", "description"]);
@@ -46,14 +46,17 @@ exports.updateOne = (Model) => async (req, res, next) => {
     }
     //modify data
     //allow the field for user to change if it's allowed the doc[key] will change the field
-    for (const key in allows) {
+    console.log(allows);
+    for (let key in req.body) {
+      //for let key in req.body
+      console.log(key);
       if (allows.includes(key)) {
         doc[key] = req.body[key];
         //doc.title = req.body.title
       }
     }
     await doc.save();
-    res.status(200).json({ status: "ok", data: "doc" });
+    res.status(200).json({ status: "ok", data: doc });
   } catch (error) {
     return res.status(500).json({ status: "fail", message: error.message });
   }

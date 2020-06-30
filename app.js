@@ -41,23 +41,11 @@ app.use("/experiences", expRouter);
 app.use("/experiences/:expID", reviewRouter);
 
 app.route("*").all(function (req, res, next) {
-  next(new Error("not found"));
-});
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
   next(new AppError(404, "Route not found")); //go straight to the middleware
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  if (process.env.NODE_ENV !== "development") {
-    res.status(err.statusCode).json({ status: err.status, message: err.message });
-  } else {
-    res.status(err.statusCode).json({ status: err.status, message: err.message, stack: err.stack });
-  }
-});
-
-
+const errorController = require("./utils/errorController");
+app.use(errorController);
 
 module.exports = app;

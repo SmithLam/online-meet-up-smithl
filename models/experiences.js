@@ -26,14 +26,19 @@ const Schema = new mongoose.Schema(
       {
         type: mongoose.Schema.ObjectId,
         ref: "Tag",
-        required: true,
       },
     ],
     item: [{ type: String }],
-    price: [{ type: Number }],
-    country: {
-      city: String,
-      country: String,
+    price: { type: Number, default: 0 },
+    averageRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    nRating: {
+      type: Number,
+      default: 0,
     },
     // reviews: [
     //   {

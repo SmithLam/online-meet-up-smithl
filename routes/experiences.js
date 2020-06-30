@@ -18,7 +18,7 @@ router
 router
   .route("/:expID")
   .get(getSingleExperience)
-  .delete(loginRequired, hostRequired, deleteExperience)
-  .patch(loginRequired, hostRequired, updateExperience);
+  .patch(loginRequired, hostRequired, updateExperience)
+  .delete(loginRequired, hostRequired, deleteExperience);
 
 module.exports = router;
