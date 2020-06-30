@@ -29,6 +29,12 @@ const Schema = new mongoose.Schema(
         required: true,
       },
     ],
+    item: [{ type: String }],
+    price: [{ type: Number }],
+    country: {
+      city: String,
+      country: String,
+    },
     // reviews: [
     //   {
     //     type: mongoose.Schema.ObjectId,
