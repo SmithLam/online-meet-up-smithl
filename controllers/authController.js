@@ -39,3 +39,26 @@ exports.facebookAuthHandler = function (req, res, next) {
     }
   })(req, res, next);
 };
+
+exports.loginGoogle = passport.authenticate('google', {
+  scope: ["email", "profile"],
+});
+
+exports.googleAuthHandler = function (req, res, next) {
+  passport.authenticate('google', async function (err, profile) {
+    //if email exists in database => login the user and return token
+    //else email doesn't exist, we create a new user with such email
+    try {
+      console.log("what is profile in auth", profile);
+      const email = profile._json.email;
+      const name = profile._json.name;
+      const user = await User.findOneOrCreate({ email, name });
+      const token = await user.generateToken();
+      //if user successfully logs in, redirect to token page
+      return res.redirect(`https://localhost:3000/?token=${token}`);
+    } catch (err) {
+      console.log(err);
+      return res.redirect(`https://localhost:3000/login`);
+    }
+  })(req, res, next);
+};

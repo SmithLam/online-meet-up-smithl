@@ -5,6 +5,8 @@ const {
   loginWithEmail,
   loginFacebook,
   facebookAuthHandler,
+  loginGoogle,
+  googleAuthHandler,
 } = require("../controllers/authController");
 
 const {
@@ -14,6 +16,7 @@ const {
   logoutMyProfile,
 } = require("../controllers/userController");
 const { loginRequired } = require("../middleware/auth.js");
+const { route } = require(".");
 
 router
   .route("/login")
@@ -25,7 +28,9 @@ router
 router.route("/logout").get(loginRequired, logoutMyProfile);
 
 router.route("/facebook/login").get(loginFacebook);
-
 router.route("/facebook/authorized").get(facebookAuthHandler);
+
+router.route("/google/login").get(loginGoogle);
+router.route("/google/authorized").get(googleAuthHandler);
 
 module.exports = router;
