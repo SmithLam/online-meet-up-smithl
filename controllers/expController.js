@@ -4,7 +4,13 @@ const { deleteOne, updateOne } = require("./handleFactory");
 
 exports.getExperiences = async (req, res, next) => {
   try {
-    const exp = await Experiences.find({}).populate("tags").populate("host");
+    const filters = { ...req.query };
+    const paginationKeys = ["limit", "page", "sort"];
+    paginationKeys.map((el) => delete filters[el]);
+    console.log(filters);
+
+    const q = Experiences.find({}).populate("tags").populate("host");
+    const exp = await q.limit(10)
     return res.status(200).json({
       status: "OK",
       data: exp,

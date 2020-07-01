@@ -25,15 +25,15 @@ const schema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "password is required"],
+      // required: [true, "password is required"],
     },
     token: [String],
     type: {
       type: String,
       enum: ["normal", "host"],
       required: [true, "Type of user is required"],
-      default:"normal"
-    }
+      default: "normal",
+    },
   },
   {
     timestamps: true,
@@ -89,5 +89,16 @@ schema.pre("save", async function (next) {
   }
   next();
 });
+
+schema.statics.findOneOrCreate = async function ({ email, name }) {
+  let user = await this.findOne({ email });
+  if (!user) {
+    user = await this.create({
+      email: email,
+      name: name
+    });
+  }
+  return user
+};
 
 module.exports = mongoose.model("User", schema);

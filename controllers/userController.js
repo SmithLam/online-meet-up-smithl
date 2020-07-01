@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const passport = require("../oauth/index");
 
 exports.createUser = async (req, res, next) => {
   try {
@@ -13,7 +14,7 @@ exports.createUser = async (req, res, next) => {
       email: email,
       name: name,
       password: password,
-      type: type || "normal"
+      type: type || "normal",
     });
 
     res.status(201).json({
@@ -55,9 +56,11 @@ exports.logoutMyProfile = async (req, res, next) => {
     const user = req.user;
     const token = req.token;
     user.token = user.token.filter((item) => item !== token);
-    await user.save()
+    await user.save();
     res.status(204).json({ status: "Logged out", data: null });
   } catch (err) {
     return res.send(err.message);
   }
 };
+
+

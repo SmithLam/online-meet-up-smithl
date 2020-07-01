@@ -1,7 +1,11 @@
 var express = require("express");
 var router = express.Router();
 
-const { loginWithEmail } = require("../controllers/authController");
+const {
+  loginWithEmail,
+  loginFacebook,
+  facebookAuthHandler,
+} = require("../controllers/authController");
 
 const {
   createUser,
@@ -19,5 +23,9 @@ router
   .post(loginWithEmail);
 
 router.route("/logout").get(loginRequired, logoutMyProfile);
+
+router.route("/facebook/login").get(loginFacebook);
+
+router.route("/facebook/authorized").get(facebookAuthHandler);
 
 module.exports = router;

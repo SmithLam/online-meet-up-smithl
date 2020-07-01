@@ -11,6 +11,8 @@ var reviewRouter = require("./routes/review");
 const mongoose = require("mongoose");
 const { stack } = require("./routes/users");
 require("dotenv").config();
+const passport = require("passport");
+const AppError = require("./utils/appError");
 
 mongoose
   .connect(process.env.DB, {
@@ -33,6 +35,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(passport.initialize());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
