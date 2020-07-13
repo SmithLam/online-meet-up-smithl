@@ -13,6 +13,7 @@ const { stack } = require("./routes/users");
 require("dotenv").config();
 const passport = require("passport");
 const AppError = require("./utils/appError");
+const cors = require("cors");
 
 mongoose
   .connect(process.env.DB, {
@@ -32,6 +33,7 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
